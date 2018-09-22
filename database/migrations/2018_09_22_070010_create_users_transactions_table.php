@@ -18,9 +18,15 @@ class CreateUsersTransactionsTable extends Migration
             $table->unsignedInteger('from_user_id');
             $table->unsignedInteger('to_user_id');
             $table->unsignedDecimal('amount');
-            $table->unsignedTinyInteger('status_id');
+            $table->unsignedInteger('status_id');
             $table->date('scheduled_time');
             $table->timestamps();
+        });
+
+        Schema::table('users_transactions', function ($table) {
+            $table->foreign('status_id')->references('id')->on('statuses');
+            $table->foreign('from_user_id')->references('id')->on('users');
+            $table->foreign('to_user_id')->references('id')->on('users');
         });
     }
 
