@@ -11,6 +11,10 @@
 |
 */
 
+//Route::view('{path?}', 'welcome');
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('users');
 });
+Route::resource('users', 'UserController');
+Route::resource('transactions', 'TransactionController');
+Route::post('transactions', 'TransactionController@store')->middleware('sameUsers');
