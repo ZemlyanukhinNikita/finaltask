@@ -19,7 +19,7 @@ class CreateUsersTransactionsTable extends Migration
             $table->unsignedInteger('to_user_id');
             $table->unsignedDecimal('amount');
             $table->unsignedInteger('status_id');
-            $table->date('scheduled_time');
+            $table->dateTime('scheduled_time');
             $table->timestamps();
         });
 
