@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserTransaction extends Model
 {
+    protected $table = 'users_transactions';
     protected $fillable = [
         'from_user_id',
         'to_user_id',
@@ -18,5 +19,15 @@ class UserTransaction extends Model
     public function statuses()
     {
         return $this->belongsTo(Status::class, 'id', 'status_id');
+    }
+
+    public  function fromUser()
+    {
+        return $this->belongsTo(User::class, 'from_user_id', 'id');
+    }
+
+    public function beginTransactions()
+    {
+
     }
 }

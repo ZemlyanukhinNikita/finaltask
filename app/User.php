@@ -17,7 +17,7 @@ class User extends Model
 
     public function ownerTransactions()
     {
-        return $this->hasMany(UserTransaction::class, 'to_user_id', 'id');
+        return $this->hasMany(UserTransaction::class, 'from_user_id', 'id');
     }
 
     public function toUsersTransactions()
