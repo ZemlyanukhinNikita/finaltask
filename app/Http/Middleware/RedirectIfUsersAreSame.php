@@ -15,7 +15,7 @@ class RedirectIfUsersAreSame
      */
     public function handle($request, Closure $next)
     {
-        if ($request->input('toUser') == $request->input('from_user_id')) {
+        if ($request->input('receiverId') == $request->input('senderId')) {
             return redirect()->back()->with('danger', 'Нельзя осуществить перевод самому себе');
         }
         return $next($request);
