@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Services\TransactionService;
+use App\User;
 use App\UserTransaction;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class StartTransactions extends Command
 {
@@ -40,9 +40,9 @@ class StartTransactions extends Command
      */
     public function handle()
     {
-        $time = Carbon::now();
-        \Log::info('i was here in '. $time);
-//        $transaction = new UserTransaction();
-//        $transaction->beginTransactions();
+        $userTransaction = new UserTransaction();
+        $user = new User();
+        $transactionService = new TransactionService();
+        $transactionService->beginTransactions($userTransaction, $user);
     }
 }
