@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('first_name');
             $table->string('last_name');
-            $table->unsignedDecimal('balance')->default('0.00');
+            $table->unsignedDecimal('balance')->default(0.00);
             $table->timestamps();
         });
     }
