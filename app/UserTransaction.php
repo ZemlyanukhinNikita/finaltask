@@ -16,18 +16,18 @@ class UserTransaction extends Model
         'to_user_id',
     ];
 
-    public function statuses()
-    {
-        return $this->belongsTo(Status::class, 'id', 'status_id');
-    }
-
-    public  function fromUser()
+    public function sender()
     {
         return $this->belongsTo(User::class, 'from_user_id', 'id');
     }
 
-    public function beginTransactions()
+    public function receiver()
     {
+        return $this->belongsTo(User::class, 'to_user_id', 'id');
+    }
 
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'status_id', 'id');
     }
 }

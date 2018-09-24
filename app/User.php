@@ -12,7 +12,7 @@ class User extends Model
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'balance',
+        'id', 'first_name', 'last_name', 'balance',
     ];
 
     public function ownerTransactions()
