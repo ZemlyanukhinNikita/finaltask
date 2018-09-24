@@ -15,5 +15,3 @@
 
 </head>
 <body>
-</body>
-</html>
