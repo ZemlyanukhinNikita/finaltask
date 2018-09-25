@@ -12,10 +12,11 @@
             @endif
             Сумма перевода: {{$user->amount}} <br>
             Назначенное время: {{$user->scheduled_time}} <br>
-            Кому: <br>
-            {{$user->receiverFirstName}} {{$user->receiverLastName}}
+            Кому:
+            {{$user->receiverFirstName}} {{$user->receiverLastName}}<br>
         @else Пользователь еще не совершал транзакций.
         @endif<br>
         @endforeach
+
     </ul>
 @endif

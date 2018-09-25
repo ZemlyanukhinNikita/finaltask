@@ -3,38 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use App\UserTransaction;
+use App\UserTransfer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class TransactionController extends Controller
+class TransferController extends Controller
 {
     /**
      * Метод добавления новой запланированной транзакции
      *
      * @param  \Illuminate\Http\Request $request
-     * @param UserTransaction $userTransaction
+     * @param UserTransfer $userTransfer
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, UserTransaction $userTransaction, User $user)
+    public function store(Request $request, UserTransfer $userTransfer, User $user)
     {
         $amount = $request->input('amount');
-        $toUserId = $request->input('receiverId');
-        $fromUserId = $request->input('senderId');
+        $receiverId = $request->input('receiverId');
+        $senderId = $request->input('senderId');
         $dateTime = $request->input('dateTime');
 
+        //todo think about this validate
         if (($amount * 100) % 50 != 0) {
             return redirect()->back()->with('danger', 'Сумма не кратна 50 копейкам');
         }
 
         $this->validateTransactionFormFields($request);
 
-        $balance = $user->find($fromUserId)->balance;
+        $balance = $user->find($senderId)->balance;
 
         //Сумма списаний
-        $amountOfWriteOffs = $userTransaction->select(DB::raw('SUM(amount) as amountOfWriteOffs'))
-            ->where([['status_id', 3], ['from_user_id', $fromUserId]])->first()->amountOfWriteOffs;
+        $amountOfWriteOffs = $userTransfer->where([['status_id', 3], ['sender_id', $senderId]])->sum('amount');
 
         $userTempBalance = $balance - $amountOfWriteOffs;
 
@@ -42,9 +41,9 @@ class TransactionController extends Controller
             return redirect()->back()->with('danger', 'Недостаточно средств, ваш остаток ' . $userTempBalance . '₽');
         }
 
-        $userTransaction->create([
-            'from_user_id' => $fromUserId,
-            'to_user_id' => $toUserId,
+        $userTransfer->create([
+            'sender_id' => $senderId,
+            'receiver_id' => $receiverId,
             'amount' => $amount,
             'scheduled_time' => $dateTime,
             'status_id' => 3
@@ -82,8 +81,8 @@ class TransactionController extends Controller
      */
     public function destroy($id)
     {
-        $userTransaction = UserTransaction::find($id);
-        $userTransaction->delete();
+        $userTransfer = UserTransfer::find($id);
+        $userTransfer->delete();
         return redirect()->back()->with('success', 'Транзакция отменена');
     }
 

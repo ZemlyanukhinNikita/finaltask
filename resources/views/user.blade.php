@@ -1,6 +1,7 @@
 @include('layouts.app')
 <a href="/users">Вернуться к пользователям</a>
 @foreach(['danger', 'success'] as $status)
+
     @if (session()->has($status))
         <div class="alert alert-{{$status}}">
             {{ session()->get($status) }}
@@ -18,35 +19,35 @@
     </div>
 @endif
 <div class="col-3 float-right">
-    @foreach($transactions as $transaction)
+    @foreach($transfers as $transfer)
         <div>
-            @if($transaction->status_id == 3)
+            @if($transfer->status_id == 3)
 
                 <p class="alert-info">Запланированная транзакция:</p> Перевод
-                пользователю {{$transaction->receiver->first_name}}<br>
-                Сумма перевода: {{$transaction->amount}}<br>
-                Дата и время перевода: {{$transaction->scheduled_time}}
-                {!! Form::open(['method'=>'delete','action'=>'TransactionController@destroy', 'route' => ['transactions.destroy',$transaction->id]]) !!}
+                пользователю {{$transfer->receiver->first_name}}<br>
+                Сумма перевода: {{$transfer->amount}}<br>
+                Дата и время перевода: {{$transfer->scheduled_time}}
+                {!! Form::open(['method'=>'delete','action'=>'TransferController', 'route' => ['transfers.destroy',$transfer->id]]) !!}
                 <input type="submit" class="btn btn-primary" value="Отменить">
                 {!! Form::close()!!}
             @endif
         </div>
 
         <div>
-            @if($transaction->status_id == 1)
+            @if($transfer->status_id == 1)
                 <p class="alert-success">Совершенная транзакция:</p>  Перевод
-                пользователю {{$transaction->receiver->first_name}}<br>
-                Сумма перевода: {{$transaction->amount}}<br>
-                Дата и время перевода: {{$transaction->scheduled_time}}
+                пользователю {{$transfer->receiver->first_name}}<br>
+                Сумма перевода: {{$transfer->amount}}<br>
+                Дата и время перевода: {{$transfer->scheduled_time}}
             @endif
         </div>
 
         <div>
-            @if($transaction->status_id == 2)
+            @if($transfer->status_id == 2)
                 <p class="alert-danger">Невыполненная транзакция:</p> Перевод
-                пользователю {{$transaction->receiver->first_name}}<br>
-                Сумма перевода: {{$transaction->amount}}<br>
-                Дата и время перевода: {{$transaction->scheduled_time}}
+                пользователю {{$transfer->receiver->first_name}}<br>
+                Сумма перевода: {{$transfer->amount}}<br>
+                Дата и время перевода: {{$transfer->scheduled_time}}
             @endif
         </div>
     @endforeach
@@ -60,7 +61,7 @@
     Кому:<br>
 
 
-    {!! Form::open(['action' => 'TransactionController@store']) !!}
+    {!! Form::open(['action' => 'TransferController@store']) !!}
     @csrf
 
     <ul>

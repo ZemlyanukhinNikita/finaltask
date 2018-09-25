@@ -17,11 +17,11 @@ class User extends Model
 
     public function ownerTransactions()
     {
-        return $this->hasMany(UserTransaction::class, 'from_user_id', 'id');
+        return $this->hasMany(UserTransfer::class, 'sender_id', 'id');
     }
 
     public function toUsersTransactions()
     {
-        return $this->hasMany(UserTransaction::class, 'to_user_id', 'id');
+        return $this->hasMany(UserTransfer::class, 'receiver_id', 'id');
     }
 }

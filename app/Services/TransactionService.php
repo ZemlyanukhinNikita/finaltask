@@ -4,7 +4,7 @@ namespace App\Services;
 
 
 use App\User;
-use App\UserTransaction;
+use App\UserTransfer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,30 +13,30 @@ class TransactionService
 {
     /**
      * Метод выполняет запланированные транзакции
-     * @param UserTransaction $userTransaction
+     * @param UserTransfer $userTransfer
      * @param User $user
      */
-    public function beginTransactions(UserTransaction $userTransaction, User $user)
+    public function beginTransactions(UserTransfer $userTransfer, User $user)
     {
         //todo think about timezones
-        $userTransactions = $userTransaction->where([['status_id', 3], ['scheduled_time', '<=', Carbon::now()->addHours(7)]])->get();
+        $userTransfers = $userTransfer->where([['status_id', 3], ['scheduled_time', '<=', Carbon::now()->addHours(7)]])->get();
 
-        foreach ($userTransactions as $transaction) {
+        foreach ($userTransfers as $transfer) {
             DB::beginTransaction();
             try {
-                $newBalanceFrom = $transaction->sender->balance - $transaction->amount;
-                $newBalanceTo = $transaction->receiver->balance + $transaction->amount;
+                $newBalanceFrom = $transfer->sender->balance - $transfer->amount;
+                $newBalanceTo = $transfer->receiver->balance + $transfer->amount;
 
-                $user->find($transaction->from_user_id)->update(['balance' => $newBalanceFrom]);
-                $user->find($transaction->to_user_id)->update(['balance' => $newBalanceTo]);
+                $user->find($transfer->sender_id)->update(['balance' => $newBalanceFrom]);
+                $user->find($transfer->receiver_id)->update(['balance' => $newBalanceTo]);
 
-                $transaction->update(['status_id' => 1]);
+                $transfer->update(['status_id' => 1]);
                 DB::commit();
-                Log::info('Транзаккция с id = ' . $transaction->id . 'успешно выполнена');
+                Log::info('Перевод с id = ' . $transfer->id . ' успешно выполнен');
             } catch (\Exception $e) {
                 DB::rollback();
-                Log::warning('Транзаккция с id = ' . $transaction->id . 'не была выполнена');
-                $transaction->update(['status_id' => 2]);
+                Log::warning('Перевод с id = ' . $transfer->id . ' не был выполнен');
+                $transfer->update(['status_id' => 2]);
             }
         }
     }

@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\TransactionService;
 use App\User;
-use App\UserTransaction;
+use App\UserTransfer;
 use Illuminate\Console\Command;
 
 class StartTransactions extends Command
@@ -40,7 +40,7 @@ class StartTransactions extends Command
      */
     public function handle()
     {
-        $userTransaction = new UserTransaction();
+        $userTransaction = new UserTransfer();
         $user = new User();
         $transactionService = new TransactionService();
         $transactionService->beginTransactions($userTransaction, $user);

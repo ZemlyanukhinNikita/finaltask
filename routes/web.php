@@ -16,5 +16,5 @@ Route::get('/', function () {
     return redirect('users');
 });
 Route::resource('users', 'UserController');
-Route::resource('transactions', 'TransactionController');
-Route::post('transactions', 'TransactionController@store')->middleware('sameUsers');
+Route::resource('transfers', 'TransferController');
+Route::post('transfers', 'TransferController@store')->middleware('sameUsers');
