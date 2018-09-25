@@ -63,14 +63,18 @@ class TransferController extends Controller
             'required' => 'Заполните обязательное поле :attribute',
             'integer' => 'Число должно быть целым :attribute.',
             'max' => 'Нельзя перевести больше 1000000.',
-            'date_format' => 'Неккоректная дата'
+            'date_format' => 'Неккоректная дата',
+            'exists' => 'Пользователя не существует',
+            //todo delete middleware
+            'different' => 'Нельзя сдалть перевод самому себе',
+            'after' => 'Нельзя осуществить перевод задним числом'
         ];
 
         $this->validate($request, [
             'amount' => 'required|numeric|min:0.5|max:1000000',
-            'receiverId' => 'required|integer',
-            'senderId' => 'required|integer',
-            'dateTime' => 'required|date_format:"Y-m-d H:00:00"',
+            'receiverId' => 'required|integer|different:senderId|exists:users,id',
+            'senderId' => 'required|integer|exists:users,id',
+            'dateTime' => 'required|date_format:"Y-m-d H:00:00"|after:now',
         ], $messages);
     }
 
@@ -85,5 +89,4 @@ class TransferController extends Controller
         $userTransfer->delete();
         return redirect()->back()->with('success', 'Транзакция отменена');
     }
-
 }
