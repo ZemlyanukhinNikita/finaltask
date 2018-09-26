@@ -5,9 +5,26 @@ namespace App\Http\Controllers;
 use App\User;
 use App\UserTransfer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TransferController extends Controller
 {
+    public function loadCsvWithAllTransfers(Request $request, UserTransfer $userTransfer)
+    {
+        $dateLast = $request->input('dateLast');
+        $dateFuture = $request->input('dateFuture');
+        $allTransfers = $userTransfer->whereBetween('updated_at', [$dateLast, $dateFuture])->get();
+//        $file = new SplFileObject('csvnew.csv','w+');
+//        $file->fputcsv($allTransfers,',');
+        //      $transfers = json_decode($allTransfers);
+
+//        Storage::disk('local')->put('file.csv','');
+
+//        $file = fopen('newcsv.csv','w+');
+//        fputcsv($file, $allTransfers);
+    }
+
     /**
      * Метод добавления новой запланированной транзакции
      *
@@ -22,7 +39,7 @@ class TransferController extends Controller
         $receiverId = $request->input('receiverId');
         $senderId = $request->input('senderId');
         $dateTime = $request->input('dateTime');
-
+//        dd($dateTime);
         //todo think about this validate
         if (($amount * 100) % 50 != 0) {
             return redirect()->back()->with('danger', 'Сумма не кратна 50 копейкам');
@@ -30,27 +47,37 @@ class TransferController extends Controller
 
         $this->validateTransactionFormFields($request);
 
-        $balance = $user->find($senderId)->balance;
+        try {
+            DB::beginTransaction();
+            $balance = $user->find($senderId)->balance;
+            //Сумма списаний
+            $amountOfWriteOffs = $userTransfer->where([['status_id', 3], ['sender_id', $senderId]])->sum('amount');
+            $userTempBalance = $balance - $amountOfWriteOffs;
 
-        //Сумма списаний
-        $amountOfWriteOffs = $userTransfer->where([['status_id', 3], ['sender_id', $senderId]])->sum('amount');
+            if ($userTempBalance < $amount) {
+                return redirect()->back()->with('danger', 'Недостаточно средств, ваш остаток ' . $userTempBalance . '₽');
+            }
 
-        $userTempBalance = $balance - $amountOfWriteOffs;
+            $userTransfer->create([
+                'sender_id' => $senderId,
+                'receiver_id' => $receiverId,
+                'amount' => $amount,
+                'scheduled_time' => $dateTime,
+                'status_id' => 3
+            ]);
+            DB::commit();
 
-        if ($userTempBalance < $amount) {
-            return redirect()->back()->with('danger', 'Недостаточно средств, ваш остаток ' . $userTempBalance . '₽');
+            $message = 'Транзакция успешно запланирована на ' . $dateTime . '!';
+            Log::info($message);
+
+            return redirect()->back()->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $message = 'Транзакция не запланирована, ошибка бд';
+            Log::warning($message);
+
+            return redirect()->back()->with('danger', $message);
         }
-
-        $userTransfer->create([
-            'sender_id' => $senderId,
-            'receiver_id' => $receiverId,
-            'amount' => $amount,
-            'scheduled_time' => $dateTime,
-            'status_id' => 3
-        ]);
-
-        $message = 'Транзакция успешно запланирована на ' . $dateTime . '!';
-        return redirect()->back()->with('success', $message);
     }
 
     /**
@@ -63,7 +90,7 @@ class TransferController extends Controller
             'required' => 'Заполните обязательное поле :attribute',
             'integer' => ':attribute должно быть целым',
             'max' => 'Нельзя перевести больше 1000000',
-            'date_format' => 'Некорректная дата',
+            'date' => 'Некорректная дата',
             'exists' => 'Пользователя не существует',
             //todo delete middleware
             'different' => 'Нельзя осуществить перевод самому себе',
@@ -74,7 +101,7 @@ class TransferController extends Controller
             'amount' => 'required|numeric|min:0.5|max:1000000',
             'receiverId' => 'required|integer|different:senderId|exists:users,id',
             'senderId' => 'required|integer|exists:users,id',
-            'dateTime' => 'required|date_format:"Y-m-d H:00:00"|after:now',
+            'dateTime' => 'required|date|after:now',
         ], $messages);
     }
 
