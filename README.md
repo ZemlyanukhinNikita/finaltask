@@ -54,7 +54,7 @@
 ```
  1. Выполнить команду https://github.com/ZemlyanukhinNikita/finaltask.git
  2. Выполнить команду cd finalTask
- 3.	Выполнить команду cp .env.example .env 
+ 3. Выполнить команду cp .env.example .env 
  4. Открыть файл env и отредактировать переменые
  - DB_DATABASE=
  - DB_USERNAME=
