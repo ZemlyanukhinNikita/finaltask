@@ -27,6 +27,10 @@ class TransactionServiceTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * Тест выполняет запланированную транзакцию, и проверяет
+     * начилслился ли баланс получателю и снялся ли у отправителя
+     */
     public function testExecuteTransaction()
     {
         $dateTime = Carbon::now()->subHour();

@@ -28,25 +28,33 @@ class MainTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * Тест отправляет POST запрос на создание запланированной транзакции
+     * и проверяет в бд, добавилась ли она
+     */
     public function testCreateTransfers()
     {
         $dateTime = Carbon::now()->addHour();
         $dateTime = $dateTime->format('Y-m-d H:00:00');
-        $this->json('POST', 'http://localhost:8080/transfers', [
+        $this->json('POST', 'transfers', [
             'senderId' => 1,
             'receiverId' => 2,
             'amount' => 1,
             'dateTime' => $dateTime
         ]);
-        $this->assertDatabaseHas('users_transfers',
-            ['sender_id' => 1,
-                'receiver_id' => 2,
-                'amount' => 1,
-                'scheduled_time' => $dateTime
-            ]
-        );
+        $this->assertDatabaseHas('users_transfers', [
+            'sender_id' => 1,
+            'receiver_id' => 2,
+            'amount' => 1,
+            'scheduled_time' => $dateTime
+        ]);
     }
 
+    /**
+     * Тест отправляет POST запрос на создание запланированной транзакции
+     * с невалидным полем баланс, превышающий текущий баланс пользователя и
+     * проверяет что денег у пользователя недостаточно
+     */
     public function testNotEnoughMoney()
     {
         $dateTime = Carbon::now()->addHour();
@@ -60,6 +68,9 @@ class MainTest extends TestCase
         $this->assertEquals(422, $response->getStatusCode());
     }
 
+    /**
+     * Тест проверяет, то что нельзя осуществить перевод самому себе
+     */
     public function testTheSameUsers()
     {
         $dateTime = Carbon::now()->addHour();
@@ -73,6 +84,9 @@ class MainTest extends TestCase
         $this->assertEquals(422, $response->getStatusCode());
     }
 
+    /**
+     * Тест проверяет, что нельзя отправить дату без времени
+     */
     public function testInvalidDate()
     {
         $dateTime = Carbon::now()->addHour();
@@ -86,6 +100,9 @@ class MainTest extends TestCase
         $this->assertEquals(422, $response->getStatusCode());
     }
 
+    /**
+     * Тест проверяет, что нельзя оформить перевод в прошедшем времени
+     */
     public function testInvalidPastDate()
     {
         $dateTime = Carbon::now()->subHour();
