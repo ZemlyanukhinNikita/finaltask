@@ -16,5 +16,7 @@ Route::get('/', function () {
     return redirect('users');
 });
 Route::resource('users', 'UserController');
+Route::post('transfers/load', 'TransferController@loadCsvWithAllTransfers');
+
 Route::resource('transfers', 'TransferController');
-Route::post('transfers', 'TransferController@store')->middleware('sameUsers');
+Route::post('transfers', 'TransferController@store');
