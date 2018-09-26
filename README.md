@@ -36,9 +36,9 @@
 
 # Разворачивание проекта с помощью Docker: 
 ```
- 1. Выполнить команду ``тут команда``
- 2. Выполнить команду ``cd finalTask``
- 3. Выполнить команду ``cp .env.example .env`` 
+ 1. Выполнить команду https://github.com/ZemlyanukhinNikita/finaltask.git
+ 2. Выполнить команду cd finalTask
+ 3. Выполнить команду cp .env.example .env 
  4. Открыть файл docker-compose.yml и установить переменные
  - "MYSQL_DATABASE="
  - "MYSQL_USER="
@@ -48,20 +48,20 @@
  - DB_DATABASE=
  - DB_USERNAME=
  - DB_PASSWORD=
- 6. Выполнить команду ``make run``
+ 6. Выполнить команду make run
  ```
  # Разворачивание проекта без докера 
 ```
- 1. Выполнить команду ``тут ссылка``
- 2. Выполнить команду ``cd finalTask``
- 3.	Выполнить команду ``cp .env.example .env`` 
+ 1. Выполнить команду https://github.com/ZemlyanukhinNikita/finaltask.git
+ 2. Выполнить команду cd finalTask
+ 3.	Выполнить команду cp .env.example .env 
  4. Открыть файл env и отредактировать переменые
  - DB_DATABASE=
  - DB_USERNAME=
  - DB_PASSWORD=
  - DB_PORT:3306
- 5. Выполнить команду ``composer install``
- 6. Выполнить команду ``php artisan serve``
+ 5. Выполнить команду composer install
+ 6. Выполнить команду php artisan serve
  
  ```
  ## Для запуска отложеных платежей необходимо выполнить следующие действия
