@@ -74,4 +74,4 @@
  
  ## Для запуска тестов введите команду 
  
- ``` docker exec finaltask_app_1 vendor/bin/phpunut ```
+ ``` docker exec finaltask_app_1 vendor/bin/phpunit ```

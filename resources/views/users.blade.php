@@ -24,27 +24,5 @@
                 </ul>
             @endif
         </div>
-        <div class="col-6">
-
-            {!! Form::open(['action' => 'TransferController@loadCsvWithAllTransfers']) !!}
-            @csrf
-            <p>Выгрузить все произведенные переводы</p>
-            Выберите интервал времени:<br>
-            С <input
-                name="dateLast"
-                id="datetime-local"
-                type="datetime-local"
-                step=3600
-            >
-            По
-            <input
-                name="dateFuture"
-                id="datetime-local"
-                type="datetime-local"
-                step=3600
-            >
-            <input type="submit" class="btn btn-primary" value="Выгрузить">
-            {!! Form::close() !!}
-        </div>
     </div>
 </div>

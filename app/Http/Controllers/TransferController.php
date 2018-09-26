@@ -10,21 +10,6 @@ use Illuminate\Support\Facades\Log;
 
 class TransferController extends Controller
 {
-    public function loadCsvWithAllTransfers(Request $request, UserTransfer $userTransfer)
-    {
-        $dateLast = $request->input('dateLast');
-        $dateFuture = $request->input('dateFuture');
-        $allTransfers = $userTransfer->whereBetween('updated_at', [$dateLast, $dateFuture])->get();
-//        $file = new SplFileObject('csvnew.csv','w+');
-//        $file->fputcsv($allTransfers,',');
-        //      $transfers = json_decode($allTransfers);
-
-//        Storage::disk('local')->put('file.csv','');
-
-//        $file = fopen('newcsv.csv','w+');
-//        fputcsv($file, $allTransfers);
-    }
-
     /**
      * Метод добавления новой запланированной транзакции
      *
