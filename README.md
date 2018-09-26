@@ -50,7 +50,7 @@
  - DB_PASSWORD=
  6. Выполнить команду make run
  ```
- # Разворачивание проекта без докера 
+ # Разворачивание проекта без Docker  
 ```
  1. Выполнить команду git clone https://github.com/ZemlyanukhinNikita/finaltask.git
  2. Выполнить команду cd finaltask
