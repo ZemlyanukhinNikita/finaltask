@@ -47,26 +47,19 @@
                 <input type="hidden" name="senderId" value="{{$user->id}}">
 
                 Сумма перевода:
-                <input style='width: 200px' type="number" required class="form-control" placeholder="Сумма" name="amount"
+                <input style='width: 200px' type="number" required class="form-control" placeholder="Сумма"
+                       name="amount"
                        step="0.5"
                        min="0.5"
                        max="1000000">
                 <br>
                 Дата и время перевода:<br><br>
-
-                <input style='width: 200px' type='text' class="form-control" id='datetimepicker4' name="dateTime"/>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#datetimepicker4').datetimepicker({
-                            locale: 'ru',
-                            minDate: new Date(),
-                            format: 'YYYY-MM-DD HH:00:00',
-                        });
-                    });
-                </script>
-
+                <input
+                    name="dateTime"
+                    id="datetime-local"
+                    type="datetime-local"
+                    step=3600 format="YYYY-MM-DD H:00">
                 <br>
-
                 <input type="submit" class="btn btn-primary" value="Отправить">
             </ul>
             {!! Form::close() !!}
