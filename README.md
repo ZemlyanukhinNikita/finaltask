@@ -50,6 +50,8 @@
  - DB_PASSWORD=
  6. Выполнить команду make run
  ```
+ Сайт будет доступен по адресу http://localhost:8080/
+ 
  # Разворачивание проекта без Docker  
 ```
  1. Выполнить команду git clone https://github.com/ZemlyanukhinNikita/finaltask.git
