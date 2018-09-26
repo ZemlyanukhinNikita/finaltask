@@ -39,7 +39,7 @@
  1. Выполнить команду git clone https://github.com/ZemlyanukhinNikita/finaltask.git
  2. Выполнить команду cd finaltask
  3. Выполнить команду cp .env.example .env 
- 4. Открыть файл docker-compose.yml и установить переменные (можно оставить по умолчанию)
+ 4. Открыть файл docker-compose.yml и установить переменные
  - "MYSQL_DATABASE="
  - "MYSQL_USER="
  - "MYSQL_PASSWORD="
