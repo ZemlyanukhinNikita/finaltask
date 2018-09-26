@@ -7,10 +7,12 @@ use App\User;
 use App\UserTransfer;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class MainTest extends TestCase
 {
+    use WithoutMiddleware;
     use DatabaseTransactions;
 
     private $transactionService;
