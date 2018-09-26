@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone'  => env('TIMEZONE', 'our default timezone'),
 
     /*
     |--------------------------------------------------------------------------
