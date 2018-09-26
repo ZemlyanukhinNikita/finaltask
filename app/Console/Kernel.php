@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('start:transactions')->hourly();
+        $schedule->command('send:sms')->daily();
     }
 
     /**

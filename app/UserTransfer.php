@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class UserTransfer extends Model
@@ -28,5 +29,15 @@ class UserTransfer extends Model
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id', 'id');
+    }
+
+    public function getCountSuccessTransfers()
+    {
+        return $this->where([['status_id',1], ['scheduled_time', '>=' ,Carbon::now()->subDay()]])->count();
+    }
+
+    public function getAmountSumSuccessTransfers()
+    {
+        return $this->where([['status_id',1], ['scheduled_time', '>=' ,Carbon::now()->subDay()]])->sum('amount');
     }
 }
