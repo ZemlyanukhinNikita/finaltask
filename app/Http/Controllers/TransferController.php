@@ -24,8 +24,7 @@ class TransferController extends Controller
         $receiverId = $request->input('receiverId');
         $senderId = $request->input('senderId');
         $dateTime = $request->input('dateTime');
-//        dd($dateTime);
-        //todo think about this validate
+
         if (($amount * 100) % 50 != 0) {
             return redirect()->back()->with('danger', 'Сумма не кратна 50 копейкам');
         }
@@ -40,6 +39,7 @@ class TransferController extends Controller
             $userTempBalance = $balance - $amountOfWriteOffs;
 
             if ($userTempBalance < $amount) {
+                DB::rollback();
                 return redirect()->back()->with('danger', 'Недостаточно средств, ваш остаток ' . $userTempBalance . '₽');
             }
 
@@ -77,7 +77,6 @@ class TransferController extends Controller
             'max' => 'Нельзя перевести больше 1000000',
             'date' => 'Некорректная дата',
             'exists' => 'Пользователя не существует',
-            //todo delete middleware
             'different' => 'Нельзя осуществить перевод самому себе',
             'after' => 'Нельзя осуществить перевод в прошедшем времени'
         ];
