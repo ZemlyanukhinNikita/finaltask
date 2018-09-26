@@ -17,8 +17,10 @@ class TransactionService
      */
     public function beginTransactions(UserTransfer $userTransfer, User $user)
     {
-        //todo think about timezones
-        $userTransfers = $userTransfer->where([['status_id', 3], ['scheduled_time', '<=', Carbon::now()]])->get();
+        $userTransfers = $userTransfer->where([
+            ['status_id', 3],
+            ['scheduled_time', '<=', Carbon::now()]
+        ])->get();
 
         foreach ($userTransfers as $transfer) {
             DB::beginTransaction();

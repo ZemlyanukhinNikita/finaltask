@@ -24,17 +24,19 @@ class TransferController extends Controller
         $senderId = $request->input('senderId');
         $dateTime = $request->input('dateTime');
 
-        //todo think about this validate
         if (($amount * 100) % 50 != 0) {
             abort(400, 'Сумма перевода не кратна 50 копейкам');
         }
 
-        $this->validateTransactionFormFields($request);
+        $this->validateTransferFormFields($request);
 
         $balance = $user->find($senderId)->balance;
 
         //Сумма списаний
-        $amountOfWriteOffs = $userTransfer->where([['status_id', 3], ['sender_id', $senderId]])->sum('amount');
+        $amountOfWriteOffs = $userTransfer->where([
+            ['status_id', 3],
+            ['sender_id', $senderId]
+        ])->sum('amount');
 
         $userTempBalance = $balance - $amountOfWriteOffs;
 
@@ -56,15 +58,14 @@ class TransferController extends Controller
      * Метод валидаци полей формы
      * @param Request $request
      */
-    private function validateTransactionFormFields(Request $request)
+    private function validateTransferFormFields(Request $request)
     {
         $messages = [
             'required' => 'Заполните обязательное поле :attribute',
             'integer' => 'Число должно быть целым :attribute.',
             'max' => 'Нельзя перевести больше 1000000.',
-            'date_format' => 'Неккоректная дата',
+            'date' => 'Некорректная дата',
             'exists' => 'Пользователя не существует',
-            //todo delete middleware
             'different' => 'Нельзя сдалть перевод самому себе',
             'after' => 'Нельзя осуществить перевод задним числом'
         ];
@@ -73,7 +74,7 @@ class TransferController extends Controller
             'amount' => 'required|numeric|min:0.5|max:1000000',
             'receiverId' => 'required|integer|different:senderId|exists:users,id',
             'senderId' => 'required|integer|exists:users,id',
-            'dateTime' => 'required|date_format:"Y-m-d H:00:00"|after:now',
+            'dateTime' => 'required|date|after:now',
         ], $messages);
     }
 

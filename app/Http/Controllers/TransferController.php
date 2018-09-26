@@ -29,18 +29,22 @@ class TransferController extends Controller
             return redirect()->back()->with('danger', 'Сумма не кратна 50 копейкам');
         }
 
-        $this->validateTransactionFormFields($request);
+        $this->validateTransferFormFields($request);
 
         try {
             DB::beginTransaction();
             $balance = $user->find($senderId)->balance;
             //Сумма списаний
-            $amountOfWriteOffs = $userTransfer->where([['status_id', 3], ['sender_id', $senderId]])->sum('amount');
+            $amountOfWriteOffs = $userTransfer->where([
+                ['status_id', 3],
+                ['sender_id', $senderId]
+            ])->sum('amount');
             $userTempBalance = $balance - $amountOfWriteOffs;
 
             if ($userTempBalance < $amount) {
                 DB::rollback();
-                return redirect()->back()->with('danger', 'Недостаточно средств, ваш остаток ' . $userTempBalance . '₽');
+                return redirect()->back()->with('danger',
+                    'Недостаточно средств, ваш остаток ' . $userTempBalance . '₽');
             }
 
             $userTransfer->create([
@@ -69,7 +73,7 @@ class TransferController extends Controller
      * Метод валидаци полей формы
      * @param Request $request
      */
-    private function validateTransactionFormFields(Request $request)
+    private function validateTransferFormFields(Request $request)
     {
         $messages = [
             'required' => 'Заполните обязательное поле :attribute',

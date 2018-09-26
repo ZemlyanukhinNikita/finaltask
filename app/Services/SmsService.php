@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Zelenin\SmsRu\Api;
 use Zelenin\SmsRu\Auth\ApiIdAuth;
 use Zelenin\SmsRu\Entity\Sms;
+use Zelenin\SmsRu\Exception\Exception;
 
 class SmsService
 {
@@ -18,6 +20,11 @@ class SmsService
     public function sendSms($phone, $text)
     {
         $sms = new Sms($phone, $text);
-        $this->client->smsSend($sms);
+        try {
+            $this->client->smsSend($sms);
+            Log::info('СМС сообщение успешно отправлено');
+        } catch (Exception $e) {
+            Log::error('Произошла ошибка при отправке СМС сообщения');
+        }
     }
 }

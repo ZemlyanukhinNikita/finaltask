@@ -15,12 +15,12 @@ class User extends Model
         'id', 'first_name', 'last_name', 'balance',
     ];
 
-    public function ownerTransactions()
+    public function senderTransfers()
     {
         return $this->hasMany(UserTransfer::class, 'sender_id', 'id');
     }
 
-    public function toUsersTransactions()
+    public function receiversTransfers()
     {
         return $this->hasMany(UserTransfer::class, 'receiver_id', 'id');
     }
