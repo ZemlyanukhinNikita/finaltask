@@ -61,13 +61,13 @@ class TransferController extends Controller
     {
         $messages = [
             'required' => 'Заполните обязательное поле :attribute',
-            'integer' => 'Число должно быть целым :attribute.',
-            'max' => 'Нельзя перевести больше 1000000.',
-            'date_format' => 'Неккоректная дата',
+            'integer' => ':attribute должно быть целым',
+            'max' => 'Нельзя перевести больше 1000000',
+            'date_format' => 'Некорректная дата',
             'exists' => 'Пользователя не существует',
             //todo delete middleware
-            'different' => 'Нельзя сдалть перевод самому себе',
-            'after' => 'Нельзя осуществить перевод задним числом'
+            'different' => 'Нельзя осуществить перевод самому себе',
+            'after' => 'Нельзя осуществить перевод в прошедшем времени'
         ];
 
         $this->validate($request, [
