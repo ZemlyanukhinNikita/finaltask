@@ -36,8 +36,8 @@
 
 # Разворачивание проекта с помощью Docker: 
 ```
- 1. Выполнить команду https://github.com/ZemlyanukhinNikita/finaltask.git
- 2. Выполнить команду cd finalTask
+ 1. Выполнить команду git clone https://github.com/ZemlyanukhinNikita/finaltask.git
+ 2. Выполнить команду cd finaltask
  3. Выполнить команду cp .env.example .env 
  4. Открыть файл docker-compose.yml и установить переменные (можно оставить по умолчанию)
  - "MYSQL_DATABASE="
@@ -52,8 +52,8 @@
  ```
  # Разворачивание проекта без докера 
 ```
- 1. Выполнить команду https://github.com/ZemlyanukhinNikita/finaltask.git
- 2. Выполнить команду cd finalTask
+ 1. Выполнить команду git clone https://github.com/ZemlyanukhinNikita/finaltask.git
+ 2. Выполнить команду cd finaltask
  3. Выполнить команду cp .env.example .env 
  4. Открыть файл env и отредактировать переменые
  - DB_DATABASE=

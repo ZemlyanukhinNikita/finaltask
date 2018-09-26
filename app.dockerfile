@@ -7,6 +7,8 @@ RUN apt-get update && apt-get install -y libmcrypt-dev mysql-client \
 
 RUN apt-get install -y git
 
+RUN apt-get install zip unzip php7.2-zip
+
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /var/www
