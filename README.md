@@ -39,12 +39,12 @@
  1. Выполнить команду https://github.com/ZemlyanukhinNikita/finaltask.git
  2. Выполнить команду cd finalTask
  3. Выполнить команду cp .env.example .env 
- 4. Открыть файл docker-compose.yml и установить переменные
+ 4. Открыть файл docker-compose.yml и установить переменные (можно оставить по умолчанию)
  - "MYSQL_DATABASE="
  - "MYSQL_USER="
  - "MYSQL_PASSWORD="
  - "MYSQL_ROOT_PASSWORD="
- 5. Открыть файл env и установить переменные
+ 5. Открыть файл env и установить переменные (должно совпадать с данными в docker-compose.yml)
  - DB_DATABASE=
  - DB_USERNAME=
  - DB_PASSWORD=
